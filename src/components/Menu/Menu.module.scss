@@ -1,58 +1,84 @@
 $btnColor: #375abb;
 
-.menu{
+.menu {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .btns {
+    max-width: 300px;
     width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .btns{
-        max-width: 275px;
+    a {
+      text-decoration: none;
+      margin-bottom: 15px;
+      display: block;
+      width: 100%;
+
+      .btn {
         width: 100%;
-        a{
-            text-decoration: none;
-            margin-bottom: 15px;
-            display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 11px 30px;
+        background-color: $btnColor;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+        user-select: none;
 
-            .btn{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 11px 30px;
-                background-color: $btnColor;
-                border-radius: 5px;
-                cursor: pointer;
-                font-weight: 500;
-                transition: background-color .2s;
-                user-select: none;
-    
-                &:last-child{
-                    margin-bottom: 0;
-                }
-    
-                &:hover{
-                    background-color: lighten($btnColor, 5%);;
-                }
-    
-                &:active{
-                    background-color: darken($btnColor, 5%);;
-                }
-
-                .btn__text{
-                    position: relative;
-
-                    span{
-                        position: absolute;
-                        left: -30px;
-                        top: 50%;
-                        transform: translateY(-50%);
-                    }
-                }
-            }
+        &:last-child {
+          margin-bottom: 0;
         }
+
+        &:hover {
+          background-color: lighten($btnColor, 5%);
+        }
+
+        &:active {
+          background-color: darken($btnColor, 5%);
+        }
+
+        .btn__text {
+          position: relative;
+
+          span {
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.btns_solo{
+    display: flex;
+    align-items: center;
+    .btn_settings {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $btnColor;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background-color 0.2s;
+      user-select: none;
+      padding: 9px 10px;
+      margin-left: 10px;
+      margin-bottom: 15px;
+      width: auto!important;
+      &:hover {
+        background-color: lighten($btnColor, 5%);
+      }
+
+      &:active {
+        background-color: darken($btnColor, 5%);
+      }
     }
 }

@@ -1,0 +1,130 @@
+.settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.property {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.text {
+  margin-right: 25px;
+}
+
+.value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 20px;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  user-select: none;
+}
+
+.cellsMinus{
+  margin-right: 10px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 30px;
+  transition: opacity .2s;
+}
+
+.cellsPlus{
+  margin-left: 10px;
+  user-select: none;
+  cursor: pointer;
+  font-size: 25px;
+  transition: opacity .2s;
+}
+
+.difficultyMinus{
+  width: 8.5px;
+  height: 8.5px;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  transform: rotate(-45deg);
+  transition: opacity .2s;
+  user-select: none;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.difficultyPlus{
+  width: 8.5px;
+  height: 8.5px;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  transform: rotate(135deg);
+  transition: opacity .2s;
+  user-select: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.difficultyName{
+  width: 100px;
+}
+
+.cellsInLine{
+  width: 42.5px;
+  background-color: #375abb;
+}
+
+.cell_x{
+  width: 25px;
+  position: relative;
+  z-index: 10;
+  transition: opacity .2s;
+  cursor: pointer;
+
+  .cellLine{
+      width: 25px;
+      height: 4px;
+      background-color: #fd3f3f;
+      border-radius: 5px;
+  }    
+
+  .cellLineFirst{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  
+  .cellLineSecond{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+.cell_o{
+  width: 22.5px;
+  position: relative;
+  z-index: 10;
+  transition: opacity .2s;
+  cursor: pointer;
+
+  .circle{
+      width: 22.5px;
+      height: 22.5px;
+      border-radius: 50%;
+      border: 4px rgb(114, 154, 255) solid;
+  }
+}
+
+.slash{
+  font-size: 20px;
+  margin: 0 6px;
+}
+
+.character{
+  padding: 0
+}

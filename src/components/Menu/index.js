@@ -1,18 +1,23 @@
 import styles from './Menu.module.scss';
 import { Link } from "react-router-dom";
 
-const Menu = () => {
+const Menu = ({ }) => {
     return(
         <div className="show">
             <div className={styles.menu}>
                 <div className={styles.btns}>
-                    <Link to='solo'>
-                        <div className={styles.btn}>
-                            <div className={styles.btn__text}>
-                                <span>🤖</span>Single player game
+                    <div className={styles.btns_solo}>
+                        <Link to='solo'>
+                            <div className={styles.btn}>
+                                <div className={styles.btn__text}>
+                                    <span>🤖</span>Single player game
+                                </div>
                             </div>
-                        </div>
-                    </Link>
+                        </Link>
+                        <Link to="solo-settings" className={styles.btn_settings}>
+                            <div className={styles.btn__text}>⚙️</div>
+                        </Link>
+                    </div>
                     <Link to='multiplayer'>
                         <div className={styles.btn}>
                             <div className={styles.btn__text}>
