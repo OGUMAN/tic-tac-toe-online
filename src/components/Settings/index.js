@@ -1,11 +1,7 @@
-import styles from './Settings.module.scss';
+import styles from "./Settings.module.scss";
 
 const Settings = () => {
-    return(
-        <div className="show">
-            Settings
-        </div>
-    )
-}
+  return <div className="show">Settings</div>;
+};
 
 export default Settings;

@@ -1,0 +1,38 @@
+.stat__x {
+  width: 30px;
+  position: relative;
+  z-index: 10;
+
+  .cellLine {
+    width: 30px;
+    height: 4px;
+    border-radius: 5px;
+  }
+
+  .cellLineFirst {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .cellLineSecond {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+}
+
+.stat__o {
+  width: 30px;
+  position: relative;
+  z-index: 10;
+
+  .circle {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 4px solid;
+  }
+}

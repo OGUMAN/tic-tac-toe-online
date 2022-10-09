@@ -1,147 +1,168 @@
 $gameBtnsColor: #282828;
 $gameBtnsBlockedColor: #474747;
 
-.game{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    max-width: 350px;
-    margin: 0 auto;
-    width: 100%;    
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  max-width: 450px;
+  margin: 0 auto;
+  width: 100%;
+  padding-top: 65px;
 
-    .field{
-        position: relative;
-        width:100vw;
-        height:100vw;
-        width: 100%;
-        max-height: 350px;
-        background-color: #1b1b1b;
-        border-radius: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        overflow: hidden;
-    }
-
-    .borderRemover{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100vw;
-        height: 100vw;
-        max-width: 346px;
-        max-height: 346px;
-        border-radius: 110px;
-        border: rgb(14, 14, 14) 100px solid;
-        box-sizing: content-box;
-    }
-}
-
-.top{
+  .field {
+    position: relative;
+    width: 100vw;
+    height: 100vw;
     width: 100%;
+    max-height: 450px;
+    // background-color: #1b1b1b;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
+    flex-wrap: wrap;
+    overflow: hidden;
+    border: none;
+    border-collapse: collapse;
+    tbody{
+      width: 100%;
+      tr:first-child td {
+        border-top: none;
+      }
+      
+      tr:last-child td {
+        border-bottom: none;
+      }
+      
+      tr td:first-child {
+        border-left: none;
+      }
+      
+      tr td:last-child {
+        border-right: none;
+      }
+    }
+  }
 }
 
-.bottom{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 30px;
-}
-
-.again{
-    padding: 15px 45px;
-    font-size: 17.5px;
-    font-weight: 500;
-    background-color: $gameBtnsColor;
-    border-radius: 10px;
-    transition: background-color .2s, opacity 0.3s;
-    user-select: none;
+.top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
+  // background: #191919;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 50px;
+  .chat{
+    position: absolute;
+    top: calc(50% + 5px);
+    transform: translateY(-50%);
+    left: 15px;
     cursor: pointer;
-    &:hover{
-        background-color: lighten($gameBtnsColor, 3%);;
-    }
-
-    &:active{
-        background-color: darken($gameBtnsColor, 3%);
-    }
+  }
 }
 
-.blocked{
-    opacity: 0.5;
-    background-color: $gameBtnsColor;
-    cursor: unset;
-    &:hover{
-        background-color: $gameBtnsColor;
-    }
-
-    &:active{
-        background-color: $gameBtnsColor;
-    }
+.bottom {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
 }
 
-.stat{
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  overflow: hidden;
+  .item{
     display: flex;
     align-items: center;
-}
-
-.stat__item{
-    margin-left: 30px;
-}
-
-.stat__x{
-    width: 30px;
-    position: relative;
-    z-index: 10;
-
-    .cellLine{
-        width: 30px;
-        height: 4px;
-        border-radius: 5px;
-    }    
-
-    .cellLineFirst{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg);
+    justify-content: flex-end;
+    width: 50%;
+    margin-right: 5px;
+    &:last-child{
+      margin-left: 5px;
+      display: flex;
+      justify-content: flex-start;
+      width: 50%;
     }
-    
-    .cellLineSecond{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg);
+    .score {
+      font-size: 20px;
+      font-weight: 600;
+      user-select: none;
     }
-}
-
-.stat__o{
-    width: 30px;
-    position: relative;
-    z-index: 10;
-
-    .circle{
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        border: 4px solid;
+    .right{
+      padding-left: 5px;
+      margin-right: 10px;
     }
+    .left{
+      padding-right: 5px;
+      margin-left: 10px;
+    }
+    .nickname{
+      font-size: 14px;
+      font-weight: 500;
+      text-overflow: ellipsis;
+      max-width: 200px;
+      overflow: hidden;
+    }
+  }
 }
 
-.stat__item{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.stat__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.stat__score{
-    margin-left: 5px;
+.me{
     font-size: 20px;
-    font-weight: 500;
+    padding-left: 12.5px;
+}
+
+.bottom_online{
+    justify-content: space-between;
+}
+
+.currentStep{
+    display: flex;
+    align-items: center;
+}
+
+.time{
+    margin-left: 10px;
+    font-size: 22.5px;
+}
+
+tr{
+  width: 100%;
+  display: flex;
+}
+
+.unread{
+  position: absolute;
+  right: -2px;
+  bottom: 6px;
+  height: 8px;
+  width: 8px;
+  background-color: #ff1b1b;
+  border-radius: 50%;
+}
+
+.seconds{
+  display: flex;
+  justify-content: flex-end;
+  font-size: 11px;
+  height: 13px;
+}
+
+.seconds_right{
+  justify-content: flex-start;
 }

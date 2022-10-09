@@ -1,0 +1,83 @@
+$gameBtnsColor: #363636;
+$gameBtnsBlockedColor: #474747;
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 400px;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #212121;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  text-align: center;
+  img{
+    margin-bottom: 10px;
+  }
+  .title {
+    font-size: 25px;
+    margin-bottom: 5px;
+  }
+  .text {
+    font-size: 17.5px;
+    margin-bottom: 15px;
+  }
+  .leave {
+    background-color: #161616;
+    &:hover {
+      background-color: lighten(#161616, 1%);
+    }
+    &:active {
+      background-color: darken(#161616, 1%);
+    }
+    text-decoration: none;
+  }
+}
+
+.again_multiplayer {
+  padding-left: 35px;
+  padding-right: 35px;
+  span {
+    padding-left: 5px;
+  }
+}
+
+.again, .leave {
+  padding: 12.5px 30px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+  min-width: 150px;
+  transition: background-color 0.2s, opacity 0.3s;
+  user-select: none;
+  cursor: pointer;
+}
+
+.again{
+  background-color: $gameBtnsColor;
+  &:hover {
+    background-color: lighten($gameBtnsColor, 3%);
+  }
+  &:active {
+    background-color: darken($gameBtnsColor, 3%);
+  }
+}
+
+.blocked {
+  opacity: 0.5;
+  background-color: $gameBtnsColor;
+  cursor: unset;
+  &:hover {
+    background-color: $gameBtnsColor;
+  }
+
+  &:active {
+    background-color: $gameBtnsColor;
+  }
+}

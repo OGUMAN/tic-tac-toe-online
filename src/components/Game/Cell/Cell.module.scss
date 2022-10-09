@@ -2,13 +2,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: #0e0e0e 1px solid;
+    border: #888888 3.5px solid;
     user-select: none;
-
-    &:hover{
-        transition: background-color .2s;
-        background-color: #272727;
-    }
+    height: 100% !important;
 }
 
 .cellX{
@@ -18,7 +14,7 @@
     // transform: translateY(-10px);
 
     .cellLine{
-        width: 60px;
+        width: 80px;
         height: 5.5px;
         border-radius: 5px;
     }    
@@ -44,8 +40,8 @@
     animation: cellClickAnimation 0.15s;
 
     .circle{
-        width: 60px;
-        height: 60px;
+        width: 70px;
+        height: 70px;
         border-radius: 50%;
         border: 5.5px solid;
     }
@@ -153,7 +149,6 @@
 .line{
     height: 20px;
     width: 300%;
-    background-color: green;
     z-index: 20;
     position: absolute;
     top: 50%;

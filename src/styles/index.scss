@@ -1,58 +1,83 @@
-body{
-    background-color: rgb(14, 14, 14);
-    font-family: 'Montserrat', sans-serif;
-    color: #ffffff;
+body {
+  background-color: #1a1a1a;
+  font-family: "Montserrat", sans-serif;
+  color: #ffffff;
 }
 
-body,html {
-    margin: 0;
-    padding: 0 10px;
+body,
+html {
+  margin: 0;
+  padding: 0 10px;
 }
 
-*, *:after, *:before {
-    box-sizing: border-box;
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
 }
 
-a{
-    color: #ffffff;
+a {
+  color: #ffffff;
 }
 
 @keyframes show {
-    0%{
-        opacity: 0;
-    }
-
-    100%{
-        opacity: 1;
-    }
-}
-
-.show{
-    animation: show 0.2s;
-}
-
-.back{
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #282828;
-    transition: background-color .2s;
-    position: absolute;
-    top: 30px;
-    left: 30px;
-    &:hover{
-        background-color: lighten(#282828, 3%);;
-    }
-
-    &:active{
-        background-color: darken(#282828, 3%);
-    }
-
-    .arrow{
-      width: 15px;
-      height: 15px;
-      border-top: 3px solid #969696;
-      border-left: 3px solid #969696;
-      transform: rotate(-45deg);
-      margin-left: 5px;
+  0% {
+    opacity: 0;
   }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.show {
+  animation: show 0.25s;
+}
+
+.back {
+  position: absolute;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  right: 12.5px;
+  top: 12.5px;
+  &:after {
+    border-radius: 5px;
+    display: block;
+    content: "";
+    height: 4px;
+    width: 25px;
+    background-color: #d3d3d3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  &:before {
+    border-radius: 5px;
+    display: block;
+    content: "";
+    height: 4px;
+    width: 25px;
+    background-color: #d3d3d3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+.wrapper {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(1, 1, 1, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+
+input:focus{
+  outline: none;
 }
