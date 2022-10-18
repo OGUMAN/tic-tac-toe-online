@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./Cell.module.scss";
 import Line from "./Line";
-import Icon from "../Icon";
 
 const Cell = ({
+  theme,
   setCell,
   cellContent,
   index,
@@ -11,29 +11,16 @@ const Cell = ({
   winnerCells,
   winner,
   step,
-  enemyStep,
+  opponentStep,
   angle,
 }) => {
-  const [isWinnerCell, setIsWinnerCell] = useState(false);
-
-  useEffect(() => {
-    for (let i = 0; i <= winnerCells.length - 1; i++) {
-      if (index === winnerCells[i]) {
-        setTimeout(() => {
-          setIsWinnerCell(true);
-        }, 1000 + (200 * i) / winnerCells.length);
-      }
-    }
-  }, [winnerCells]);
-
-  useEffect(() => {
-    setIsWinnerCell(false);
-  }, [winner]);
 
   return (
     <td
       onClick={setCell}
-      className={styles.cell}
+      className={
+        (theme === "white" ? styles.cellWhite : "") + " " + styles.cell
+      }
       style={{
         width: `calc(100% / ${cellsInLine})`,
         height: `calc(100% / ${cellsInLine})`,
@@ -46,7 +33,7 @@ const Cell = ({
     >
       <div className={styles.cellContent}>
         {cellContent === "x" ? (
-          <div className={(isWinnerCell && styles.won) + " " + styles.cellX}>
+          <div className={styles.cellX}>
             <div
               style={{
                 backgroundColor:
@@ -63,7 +50,7 @@ const Cell = ({
             ></div>
           </div>
         ) : cellContent === "o" ? (
-          <div className={(isWinnerCell && styles.won) + " " + styles.cellY}>
+          <div className={(styles.won) + " " + styles.cellO}>
             <div
               style={{
                 borderColor:
@@ -76,11 +63,13 @@ const Cell = ({
           ""
         )}
       </div>
+      {/* line starts from the first winner cell */}
       {index === winnerCells[0] && (
         <Line
+          theme={theme}
           angle={angle}
           step={step}
-          enemyStep={enemyStep}
+          opponentStep={opponentStep}
           cellsInLine={cellsInLine}
           winner={winner}
         />

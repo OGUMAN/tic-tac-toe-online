@@ -4,10 +4,21 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1a1a1a;
+    z-index: 100;
+    top: 0;
+    left: 0;
     .text{
         margin-bottom: 5px;
     }
     .online{
         font-size: 13px;
     }
+}
+
+.loadingWhite{
+    background-color: #ffffff;
 }

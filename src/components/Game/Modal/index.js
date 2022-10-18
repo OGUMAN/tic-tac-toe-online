@@ -3,13 +3,15 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from "./Modal.module.scss";
 
 const Modal = ({
+  leaved,
+  modalLangJson = {},
+  theme,
   winner,
   step,
   playAgain,
   againVotesBlocked,
   againVotes,
   gamemode,
-  setMenuModuleOpen,
   whoAfk,
   modalTimer,
 }) => {
@@ -21,61 +23,67 @@ const Modal = ({
     "fireworks2.svg",
     "happy.svg",
   ];
-  const lostImgs = ["crying.svg", "crying2.svg", "angry.svg"];
+  const lostImgs = ["crying.svg", "crying2.svg"];
   const drawImgs = ["handshake.svg"];
-  const wonTitles = ["Congratulations!"];
-  const lostTitles = ["Compassion!", "Oh no!"];
-
-  const timeoutImgs = ["alarm.svg", "alarm2.svg"];
-
+  const timeoutImgs = ["alarm.svg"];
   const [modalImg, setModalImg] = useState("");
-  const [modalTitle, setModalTitle] = useState("");
 
   const getRandomEl = (array) => {
     return array[Math.floor(Math.random() * array.length)];
   };
 
   useEffect(() => {
-    if (winner === "draw") {
+    if (leaved) {
+      setModalImg("exit.svg ");
+    } else if (winner === "draw") {
       setModalImg(getRandomEl(drawImgs));
     } else if (winner === "timeout") {
       setModalImg(getRandomEl(timeoutImgs));
     } else if (step === winner) {
       setModalImg(getRandomEl(wonImgs));
-      setModalTitle(getRandomEl(wonTitles));
     } else if (step !== winner) {
       setModalImg(getRandomEl(lostImgs));
-      setModalTitle(getRandomEl(lostTitles));
     }
   }, [winner]);
 
   return (
     <div className="wrapper">
-      <div className={styles.modal + " show"}>
+      <div
+        className={
+          (theme === "white" ? styles.modalWhite : "") +
+          " " +
+          styles.modal +
+          " show"
+        }
+      >
         <img src={`img/${modalImg}`} width={80} height={80} alt="Firework" />
         <div>
-          <div className={styles.title}>
-            {winner === "draw"
-              ? "It's Draw!"
+          <div className={"title " + styles.title}>
+            {leaved
+              ? modalLangJson["leavedTitle"]
+              : winner === "draw"
+              ? modalLangJson["drawTitle"]
               : winner === "timeout"
               ? whoAfk === "me"
-                ? "You were kicked out!"
-                : "Your opponent was kicked out!"
-              : modalTitle}
+                ? modalLangJson["youKickedTitle"]
+                : modalLangJson["opponentKickedTitle"]
+              : winner === step
+              ? modalLangJson["winTitle"]
+              : modalLangJson["lostTitle"]}
           </div>
-          <div className={styles.text}>
-            {winner === "draw"
-              ? ""
-              : winner === "timeout"
-              ? whoAfk === "me"
-                ? "You took too much time."
-                : "Your opponent took too much time."
-              : step === winner
-              ? "You are winner"
-              : "You lost the battle"}
-          </div>
+          {winner !== "draw" && !leaved && (
+            <div className={styles.text}>
+              {winner === "timeout"
+                ? whoAfk === "me"
+                  ? modalLangJson["youKickedDesc"]
+                  : modalLangJson["opponentKickedDesc"]
+                : winner === step
+                ? modalLangJson["winDesc"]
+                : modalLangJson["lostDesc"]}
+            </div>
+          )}
         </div>
-        {winner !== "timeout" && (
+        {winner !== "timeout" && !leaved && (
           <div
             onClick={playAgain}
             className={
@@ -86,16 +94,16 @@ const Modal = ({
               (againVotesBlocked && styles.blocked)
             }
           >
-            Play again{" "}
+            {modalLangJson["playAgain"]}
             <span>{gamemode === "multiplayer" && `(${againVotes}/2)`}</span>
           </div>
         )}
         <Link to="/" className={styles.leave}>
-          {winner === "timeout"
-            ? "Close"
+          {winner === "timeout" || leaved
+            ? modalLangJson["toMenu"]
             : gamemode === "multiplayer"
-            ? "Leave room"
-            : "To menu"}
+            ? modalLangJson["playAgain"]
+            : modalLangJson["toMenu"]}
           {gamemode !== "solo" && ` (${modalTimer})`}
         </Link>
       </div>

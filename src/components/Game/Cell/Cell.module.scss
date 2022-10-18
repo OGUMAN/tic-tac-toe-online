@@ -1,53 +1,13 @@
-.cell{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: #888888 3.5px solid;
-    user-select: none;
-    height: 100% !important;
-}
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: #888888 3.5px solid;
+  user-select: none;
+  height: 100% !important;
+  padding: 0;
 
-.cellX{
-    position: relative;
-    z-index: 10;
-    animation: cellClickAnimation 0.15s;
-    // transform: translateY(-10px);
-
-    .cellLine{
-        width: 80px;
-        height: 5.5px;
-        border-radius: 5px;
-    }    
-
-    .cellLineFirst{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(-45deg);
-    }
-    
-    .cellLineSecond{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) rotate(45deg);
-    }
-}
-
-.cellY{
-    position: relative;
-    z-index: 10;
-    animation: cellClickAnimation 0.15s;
-
-    .circle{
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        border: 5.5px solid;
-    }
-}
-
-.cellContent{
+  .cellContent {
     position: relative;
     z-index: 10;
     width: 100%;
@@ -55,103 +15,77 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
 
-.cellX.won{
-    .cellLineFirst{
-        animation: wonFirstLineOfX 0.6s;
+    .cellX {
+      width: 75%;
+      position: relative;
+      z-index: 10;
+      animation: cellClickAnimation 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+
+      .cellLine {
+        width: 100%;
+        height: 5.5px;
+        border-radius: 5px;
+      }
+
+      .cellLineFirst {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+
+      .cellLineSecond {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
     }
 
-    .cellLineSecond{
-        animation: wonSecondLineOfX 0.6s;
-    }
-}
+    .cellO {
+      position: relative;
+      z-index: 10;
+      animation: cellClickAnimation 0.15s;
+      width: 60%;
+      height: 60%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
+      .circle {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        border: 5.5px solid;
+      }
+    }
+
+    .line {
+      height: 20px;
+      width: 300%;
+      z-index: 20;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0%;
+    }
+
+    .cellWhite {
+      border: #c0c0c0 3.5px solid;
+    }
+  }
+}
 
 @keyframes cellClickAnimation {
-    0%{
-        opacity: 0;
-    }
-    100%{
-        opacity: 1;
-    }
-}
-
-@keyframes wonFirstLineOfX {
-    0%{
-        transform: translate(-50%, -50%) rotate(45deg); 
-    }
-    20%{
-        transform: translate(-50%, -50%) rotate(70deg); 
-    }
-    35%{
-        transform: translate(-50%, calc(-50% - 20px)) rotate(45deg); 
-    }
-    70%{
-        transform: translate(-50%, -50%) rotate(32.5deg); 
-    }
-    100%{
-        transform: translate(-50%, -50%) rotate(45deg); 
-    }
-}
-
-@keyframes wonSecondLineOfX {
-    0%{
-        transform: translate(-50%, -50%) rotate(-45deg); 
-    }
-    20%{
-        transform: translate(-50%, -50%) rotate(-70deg); 
-    }
-    35%{
-        transform: translate(-50%, calc(-50% - 20px)) rotate(-45deg); 
-    }
-    70%{
-        transform: translate(-50%, -50%) rotate(-32.5deg); 
-    }
-    100%{
-        transform: translate(-50%, -50%) rotate(-45deg); 
-    }
-    // 100%{
-    //     transform: translate(-50%, calc(-50% - 20px)) rotate(-45deg); 
-    // }
-}
-
-.cellY.won{
-    .circle{
-        animation: wonY 0.4s;
-    }
-}
-
-@keyframes wonY {
-    0%{
-        width: 60px;
-        height: 60px;
-    }
-    20%{
-        width: 55px;
-        height: 60px;
-    }
-    35%{
-        width: 55px;
-        height: 60px; 
-        transform: translateY(-20px);
-    }
-    70%{
-        width: 75px;
-        height: 45px;
-    }
-    100%{
-        width: 60px;
-        height: 60px;
-    }
-}
-
-.line{
-    height: 20px;
-    width: 300%;
-    z-index: 20;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0%;
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

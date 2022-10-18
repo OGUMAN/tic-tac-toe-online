@@ -10,7 +10,7 @@ const Icon = ({ step, size, color }) => {
               backgroundColor:
                 color === "me"
                   ? "#4c7fff"
-                  : color === "enemy"
+                  : color === "opponent"
                   ? "#fd3f3f"
                   : null,
               width: `${size}px`,
@@ -22,7 +22,7 @@ const Icon = ({ step, size, color }) => {
               backgroundColor:
                 color === "me"
                   ? "#4c7fff"
-                  : color === "enemy"
+                  : color === "opponent"
                   ? "#fd3f3f"
                   : null,
               width: `${size}px`,
@@ -37,11 +37,11 @@ const Icon = ({ step, size, color }) => {
               borderColor:
                 color === "me"
                   ? "#4c7fff"
-                  : color === "enemy"
+                  : color === "opponent"
                   ? "#fd3f3f"
                   : null,
-              width: `${size-5}px`,
-              height: `${size-5}px`,
+              width: `${size - 5}px`,
+              height: `${size - 5}px`,
             }}
             className={styles.circle}
           ></div>

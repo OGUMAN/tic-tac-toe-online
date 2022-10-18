@@ -1,8 +1,10 @@
-import styles from "./SoloSettings.module.scss";
+import styles from "./Settings.module.scss";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const SoloSettings = ({
+  langJson={},
+  theme,
   setCellsInLine,
   cellsInLine,
   setDifficulty,
@@ -10,29 +12,31 @@ const SoloSettings = ({
   setStep,
   step,
 }) => {
-  const [difficultyName, setDifficultyName] = useState("");
+  const [difficultyName, setDifficultyName] = useState(langJson["medium"]);
   const [difficultyColor, setDifficultyColor] = useState("");
 
   useEffect(() => {
     switch (difficulty) {
       case 1:
-        setDifficultyName("Easy");
-        setDifficultyColor("#295224");
+        setDifficultyName(langJson["easy"]);
+        setDifficultyColor("#338928");
         break;
       case 2:
-        setDifficultyName("Medium");
-        setDifficultyColor("#234892");
+        setDifficultyName(langJson["medium"]);
+        setDifficultyColor("#3167d2");
         break;
       case 3:
-        setDifficultyName("Hard");
-        setDifficultyColor("#7a3029");
+        setDifficultyName(langJson["hard"]);
+        setDifficultyColor("#b53f34");
         break;
       case 4:
-        setDifficultyName("Impossible");
-        setDifficultyColor("#6b3272");
+        setDifficultyName(langJson["impossible"]);
+        setDifficultyColor("#973fa3");
+        break;
+      default:
         break;
     }
-  }, [difficulty]);
+  }, [difficulty, langJson]);
 
   const onClickPlus = () => {
     if (cellsInLine < 6) {
@@ -59,17 +63,18 @@ const SoloSettings = ({
   };
 
   return (
-    <div className={styles.settings + " show"}>
+    <div className={(theme==="white" ? styles.settingsWhite : "") + " " + styles.settings + " show"}>
       <Link to="/">
         <div className="back">
           <div className="arrow"></div>
         </div>
       </Link>
+      <h1 className="title">{langJson["title"]}</h1>
       <div className={styles.property}>
-        <div className={styles.text}>Dificully:</div>
+        <div className={styles.text}>{langJson["difficulty"]}:</div>
         <div
           onClick={onDifficultyMinus}
-          className={styles.difficultyMinus}
+          className={(theme==="white" ? styles.difficultyChangeWhite : "") + ' ' + styles.difficultyMinus}
           style={{ opacity: difficulty < 2 && "0.35" }}
         ></div>
         <div
@@ -80,12 +85,12 @@ const SoloSettings = ({
         </div>
         <div
           onClick={onDifficultyPlus}
-          className={styles.difficultyPlus}
+          className={(theme==="white" ? styles.difficultyChangeWhite : "") + ' ' + styles.difficultyPlus}
           style={{ opacity: difficulty > 3 && "0.35" }}
         ></div>
       </div>
       <div className={styles.property}>
-        <div className={styles.text}>Field width:</div>
+        <div className={styles.text}>{langJson["fieldWidth"]}:</div>
         <div
           onClick={onClickMinus}
           className={styles.cellsMinus}
@@ -105,14 +110,14 @@ const SoloSettings = ({
         </div>
       </div>
       <div className={styles.property}>
-        <div className={styles.text}>Character:</div>
+        <div className={styles.text}>{langJson["character"]}:</div>
         <div className={styles.value + " " + styles.character}>
           <div
             onClick={() => {
               setStep("x");
             }}
             className={styles.cell_x}
-            style={{ opacity: step !== "x" && "0.2" }}
+            style={{ opacity: step !== "x" && "0.35" }}
           >
             <div className={styles.cellLine + " " + styles.cellLineFirst}></div>
             <div
@@ -125,7 +130,7 @@ const SoloSettings = ({
               setStep("o");
             }}
             className={styles.cell_o}
-            style={{ opacity: step !== "o" && "0.2" }}
+            style={{ opacity: step !== "o" && "0.35" }}
           >
             <div className={styles.circle}></div>
           </div>

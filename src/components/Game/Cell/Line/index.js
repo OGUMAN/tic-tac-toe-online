@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
 import styles from "./Line.module.scss";
 
-const Line = ({ cellsInLine, winner, step, enemyStep, angle }) => {
+const Line = ({ theme, cellsInLine, winner, step, opponentStep, angle }) => {
   const [width, setWidth] = useState(0);
   const [color, setColor] = useState("");
 
   useEffect(() => {
+    // winner = me?
     if (winner === step) {
       setTimeout(() => {
         setWidth(`calc(${cellsInLine} * 100% + ${cellsInLine}px)`);
-        setColor("#10111f");
-      }, 2000);
-    } else if (winner === enemyStep) {
+        setColor(theme === "white" ? "#535bc9" : "#10111f");
+      }, 1100);
+      // winner = opponent?
+    } else if (winner === opponentStep) {
       setTimeout(() => {
         setWidth(`calc(${cellsInLine} * 100% + ${cellsInLine}px)`);
-        setColor("#160f0f");
-      }, 2000);
+        setColor(theme === "white" ? "#c25151" : "#160f0f");
+      }, 1100);
     }
+    // angle is diagonal?
     if (angle === "45deg" || angle === "135deg") {
       setTimeout(() => {
+        // calculate the square diagonal length (d=√2a)
         setWidth(`calc(${Math.sqrt(2 * 1)} * 100% - 40px)`);
-      }, 2000);
+      }, 1100);
     }
   });
 

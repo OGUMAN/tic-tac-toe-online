@@ -1,0 +1,52 @@
+{
+  "settings": {
+    "title": "Налаштування",
+    "sound": "Звук",
+    "language": "Мова",
+    "theme": "Тема",
+    "choseLanguage": "Оберіть мову"
+  },
+  "menu": {
+    "solo": "Одиночна гра",
+    "multiplayer": "Мультиплеєр",
+    "settings": "Налаштування"
+  },
+  "profile": {
+    "title": "Зміна ніка",
+    "placeholder": "Введіть ваш нік",
+    "btn": "Продовжити"
+  },
+  "soloSettings": {
+    "title": "Налаштування одиночної гри",
+    "difficulty": "Складність",
+    "easy": "Легко",
+    "medium": "Середня",
+    "hard": "Важко",
+    "impossible": "Неможливо",
+    "fieldWidth": "Ширина поля",
+    "character": "Персонаж"
+  },
+  "modal": {
+    "winTitle": "Вітаю!",
+    "winDesc": "Ви переможець!",
+    "playAgain": "Грати знову",
+    "toMenu": "У меню",
+    "lostTitle": "Мої співчуття!",
+    "lostDesc": "Ви програли.",
+    "drawTitle":  "Нічия",
+    "youKickedTitle": "Ви були вигнані!",
+    "opponentKickedTitle": "Вашого опонента було вигнано!",
+    "youKickedDesc": "Ви зайняли надто багато часу.",
+    "opponentKickedDesc": "Ваш опонент зайняв надто багато часу.",
+    "leavedTitle": "Ваш суперник покинув гру"
+  },
+  "chat": {
+    "empty": "Здесь пока ничего нет",
+    "placeholder": "Написати"
+  },
+  "loading": {
+    "title": "Завантаження",
+    "searchTitle": "Пошук суперника",
+    "online": "гравців онлайн"
+  }
+}

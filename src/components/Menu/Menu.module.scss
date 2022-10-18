@@ -7,9 +7,51 @@ $btnColor: #3b549b;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .profile {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #000000;
+    border-radius: 5px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    -webkit-box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+
+    &:hover {
+      .icon {
+        transform: rotate(45deg);
+      }
+    }
+
+    .nickname {
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+
+    .icon {
+      margin-right: 5px;
+      transition: 0.2s;
+    }
+  }
+
+  .profileWhite {
+    background-color: #5877ca;
+
+    .nickname {
+      font-weight: 500;
+      color: #ffffff !important;
+    }
+  }
+
   .btns {
     max-width: 300px;
     width: 100%;
+
     a {
       text-decoration: none;
       margin-bottom: 12.5px;
@@ -21,7 +63,7 @@ $btnColor: #3b549b;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 12px 30px;
+        padding: 13px 30px;
         background-color: $btnColor;
         border-radius: 5px;
         cursor: pointer;
@@ -53,62 +95,47 @@ $btnColor: #3b549b;
         }
       }
     }
+
+    .btns_solo {
+      display: flex;
+      align-items: center;
+      .btn_settings {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $btnColor;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.2s;
+        user-select: none;
+        padding: 12.25px 11px;
+        margin-left: 10px;
+        margin-bottom: 12px;
+        width: auto !important;
+
+        &:hover {
+          background-color: lighten($btnColor, 5%);
+        }
+
+        &:active {
+          background-color: darken($btnColor, 5%);
+        }
+      }
+    }
   }
 }
 
-.btns_solo {
-  display: flex;
-  align-items: center;
-  .btn_settings {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $btnColor;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-    user-select: none;
-    padding: 10.75px 11px;
-    margin-left: 10px;
-    margin-bottom: 15px;
-    width: auto !important;
+.menuWhite {
+  .btn_settings,
+  .btn {
+    background-color: #5877ca !important;
     &:hover {
-      background-color: lighten($btnColor, 5%);
+      background-color: lighten(#5877ca, 5%) !important;
     }
 
     &:active {
-      background-color: darken($btnColor, 5%);
+      background-color: darken(#5877ca, 5%) !important;
     }
-  }
-}
-
-.profile {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  background-color: #111111;
-  border-radius: 5px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  -webkit-box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px 0px 8px -1px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-
-  &:hover {
-    .icon {
-      transform: rotate(45deg);
-    }
-  }
-
-  .nickname {
-    font-size: 12.5px;
-    font-weight: 500;
-  }
-  .icon {
-    margin-right: 5px;
-    transition: 0.2s;
   }
 }

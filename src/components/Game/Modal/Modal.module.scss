@@ -20,12 +20,11 @@ $gameBtnsBlockedColor: #474747;
     margin-bottom: 10px;
   }
   .title {
-    font-size: 25px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   .text {
     font-size: 17.5px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   .leave {
     background-color: #161616;
@@ -36,6 +35,30 @@ $gameBtnsBlockedColor: #474747;
       background-color: darken(#161616, 1%);
     }
     text-decoration: none;
+  }
+}
+
+
+.modalWhite{
+  background-color: #ffffff;
+  .leave {
+    background-color: #b8b8b8;
+    &:hover {
+      background-color: lighten(#b8b8b8, 5%);
+    }
+    &:active {  
+      background-color: darken(#b8b8b8, 5%);
+    }
+    color: #000000;
+  }
+  .again{
+    background-color: #e2e2e2;
+    &:hover {
+      background-color: lighten(#e2e2e2, 5%);
+    }
+    &:active {
+      background-color: darken(#e2e2e2, 5%);
+    }
   }
 }
 

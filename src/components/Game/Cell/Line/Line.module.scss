@@ -1,30 +1,30 @@
-.line{
-    height: 10px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    z-index: 20;
-    transition: 0.2s;
+.line {
+  height: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  z-index: 20;
+  transition: 0.2s;
 }
 
-.line45deg{
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
+.line45deg {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
-.line135deg{
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(135deg);
+.line135deg {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(135deg);
 }
 
-.line90deg{
-    transform: translateY(-50%);
-    left: 0;
-    transform: rotate(90deg);
-    transform-origin: 0%;
-    left: 50%;
-    top: -5%;
+.line90deg {
+  transform: translateY(-50%);
+  left: 0;
+  transform: rotate(90deg);
+  transform-origin: 0%;
+  left: 50%;
+  top: -5%;
 }

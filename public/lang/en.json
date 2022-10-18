@@ -1,0 +1,52 @@
+{
+  "settings": {
+    "title": "Game settings",
+    "sound": "Sound",
+    "language": "Language",
+    "theme": "Theme",
+    "choseLanguage": "Chose language"
+  },
+  "menu": {
+    "solo": "Single player game",
+    "multiplayer": "Multiplayer",
+    "settings": "Settings"
+  },
+  "profile": {
+    "title": "Who are you?",
+    "placeholder": "Input your name",
+    "btn": "Continue"
+  },
+  "soloSettings": {
+    "title": "Solo settings",
+    "difficulty": "Difficulty",
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard",
+    "impossible": "Impossible",
+    "fieldWidth": "Field width",
+    "character": "Character"
+  },
+  "modal": {
+    "winTitle": "Congratulations!",
+    "winDesc": "You are winner",
+    "playAgain": "Play again",
+    "toMenu": "To menu",
+    "lostTitle": "Compassion!",
+    "lostDesc": "You lost the battle",
+    "drawTitle":  "It's Draw!",
+    "youKickedTitle": "You were kicked out!",
+    "opponentKickedTitle": "Your opponent was kicked out!",
+    "youKickedDesc": "You took too much time.",
+    "opponentKickedDesc": "Your opponent took too much time.",
+    "leavedTitle": "Your opponent left the game"
+  },
+  "chat": {
+    "empty": "There are no messages yet",
+    "placeholder": "Message to"
+  },
+  "loading": {
+    "title": "Loading",
+    "searchTitle": "Looking for an opponent",
+    "online": "players online"
+  }
+}

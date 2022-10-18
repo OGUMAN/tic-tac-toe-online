@@ -4,8 +4,18 @@ import Cell from "./Cell";
 import Modal from "./Modal";
 import Icon from "./Icon";
 import { Link } from "react-router-dom";
+import loseAudio from "../../sounds/lose.mp3";
+import wonAudio from "../../sounds/won.mp3";
 
-const Solo = ({ cellsInLine, step, difficulty, myName }) => {
+const Solo = ({
+  soundOn,
+  modalLangJson = {},
+  cellsInLine,
+  step,
+  difficulty,
+  myName,
+  theme,
+}) => {
   const [cellsNumber, setCellsNumber] = useState(cellsInLine * cellsInLine);
   const [cells, setCells] = useState([Array(cellsNumber).fill("")]);
   const [winner, setWinner] = useState("");
@@ -16,55 +26,82 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
   const [angle, setAngle] = useState("");
   const [difficultyProbability, setDifficultyProbability] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  let botsStepInLine;
-  let enemysStepInLine;
+  let botStepInLine;
+  let opponentStepInLine;
   let isFound = false;
   let d = [];
   let newCells;
   let gameOver = false;
   let [canPlayerStep, setCanPlayerStep] = useState(true);
+  const lose = new Audio(loseAudio);
+  const won = new Audio(wonAudio);
 
-  useEffect(()=>{
-    if(winner!==""){
-      setTimeout(() => {
+  // when winner changing open modal
+  useEffect(() => {
+    if (winner !== "") {
+      // avoid opening modal when game just started
+      if (winner !== "draw") {
+        // if winner = me or opponent, open modal after 1750ms (to see crossing cells)
+        setTimeout(() => {
+          setModalOpen(true);
+        }, 1750);
+      } else {
+        // else if winner = draw, open modal instantly
         setModalOpen(true);
-      }, 2750);
+      }
+    }
+    if (soundOn) {
+      // is sound turned on
+      if (winner === step) {
+        // winner = me?
+        setTimeout(() => {
+          won.play();
+        }, 1750);
+      } else if (winner === botStep()) {
+        // or winner = opponent?
+        setTimeout(() => {
+          lose.play();
+        }, 1750);
+      }
     }
   }, [winner]);
 
   useEffect(() => {
     setCellsNumber(cellsInLine * cellsInLine);
     setCells(Array(cellsNumber).fill(""));
-  }, [cellsInLine, cellsNumber]);
+  }, [cellsInLine, cellsNumber]); // when change field width, rerender cells
 
   useEffect(() => {
     setTimeout(() => {
       if (winner === step) {
-        setStatPlayer(statPlayer + 1);
-      } else if (winner === botsStep()) {
-        setStatBot(statBot + 1);
+        // winner = me?
+        setStatPlayer(statPlayer + 1); // my score +=1
+      } else if (winner === botStep()) {
+        setStatBot(statBot + 1); // opponent's score +=1
       }
     }, 2250);
-  }, [winner]);
+  }, [winner]); // when winner changing
 
   useEffect(() => {
+    // chance that bot will think (difficulty)
     switch (difficulty) {
       case 1:
-        setDifficultyProbability(35);
+        setDifficultyProbability(35); // chance = 35%
         break;
       case 2:
-        setDifficultyProbability(50);
+        setDifficultyProbability(50); // chance = 50%
         break;
       case 3:
-        setDifficultyProbability(70);
+        setDifficultyProbability(70); // chance = 70%
         break;
       case 4:
-        setDifficultyProbability(100);
+        setDifficultyProbability(100); // chance = 100%
         break;
     }
   });
 
-  const botsStep = () => {
+  const botStep = () => {
+    // get bot's step relative my step
     if (step === "x") {
       return "o";
     } else if (step === "o") {
@@ -72,6 +109,7 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
     }
   };
 
+  // when player clicked to play again
   const playAgain = () => {
     if (canPlayAgain) {
       setCanPlayerStep(true);
@@ -84,161 +122,185 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
     }
   };
 
-  const cellsOnClick = (id) => {
-    if (cells[id] === "" && canPlayerStep && winner === "") {
-      botsStepInLine = 0;
-      enemysStepInLine = 0;
-      isFound = false;
-      d = [];
+  // when winner found
+  const ifWinnerFound = (deg, who, d) => {
+    setWinnerCells(d);
+    setAngle(deg);
+    setWinner(who);
+    gameOver = true;
+    setCanPlayAgain(true);
+    setCanPlayerStep(true);
+  };
 
-      // Players step
-      newCells = cells;
-      setCanPlayAgain(false);
-      setCanPlayerStep(false);
-      if (!gameOver) {
-        //set cell that clicked
-        newCells = cells.map((cell, index) => {
-          if (id !== index) {
-            return cell;
-          } else {
-            return step;
-          }
-        });
-        setCanPlayerStep(false);
-        setCells(newCells);
+  // setting cell by "x" or "o"
+  const setCell = (id, who) => {
+    return newCells.map((cell, index) => {
+      if (id !== index) {
+        // if index != needed id
+        return cell; // return that cell without changing
+      } else {
+        return who; // return replaced cell
       }
+    });
+  };
 
-      // Checks if player won
-      // Horizontal check
-      for (let j = 0; j < cellsInLine * cellsInLine; j += cellsInLine) {
-        enemysStepInLine = 0;
-        botsStepInLine = 0;
+  // checking field are there 3 cells in a row
+  const checkCells = (who) => {
+    // using loop, to break it when winner found or it's draw
+    checkCellsLoop: for (let i = 0; i < 5; i++) {
+      if (i === 0) {
+        for (let j = 0; j < cellsInLine * cellsInLine; j += cellsInLine) {
+          opponentStepInLine = 0;
+          botStepInLine = 0;
 
-        //checks all cells in each horizontal line
-        for (let i = j; i < j + cellsInLine; i++) {
-          if (newCells[i] === step) {
-            enemysStepInLine++;
-            if (enemysStepInLine === cellsInLine) {
-              for (let k = j; k < j + cellsInLine; k++) {
-                d.push(k);
+          //checks all cells in each horizontal line
+          for (let i = j; i < j + cellsInLine; i++) {
+            if (newCells[i] === who) {
+              opponentStepInLine++;
+              if (opponentStepInLine === cellsInLine) {
+                for (let k = j; k < j + cellsInLine; k++) {
+                  d.push(k);
+                }
+                ifWinnerFound("0deg", who, d);
+                break checkCellsLoop;
               }
-              setWinnerCells(d);
-              setAngle("0deg");
-              setWinner(step);
-              gameOver = true;
-              setCanPlayAgain(true);
-              setCanPlayerStep(true);
             }
           }
         }
       }
-
-      d = [];
       // Vertical check
-      for (let j = 0; j < cellsInLine; j++) {
-        enemysStepInLine = 0;
-        botsStepInLine = 0;
-        for (let i = j; i < cellsInLine * cellsInLine; i += cellsInLine) {
-          if (newCells[i] === step) {
-            enemysStepInLine++;
-            if (enemysStepInLine === cellsInLine) {
-              for (
-                let k = j;
-                k <= cellsInLine * cellsInLine;
-                k += cellsInLine
-              ) {
-                d.push(k);
+      if (i === 1) {
+        d = [];
+        for (let j = 0; j < cellsInLine; j++) {
+          opponentStepInLine = 0;
+          botStepInLine = 0;
+          for (let i = j; i < cellsInLine * cellsInLine; i += cellsInLine) {
+            if (newCells[i] === who) {
+              opponentStepInLine++;
+              if (opponentStepInLine === cellsInLine) {
+                for (
+                  let k = j;
+                  k <= cellsInLine * cellsInLine;
+                  k += cellsInLine
+                ) {
+                  d.push(k);
+                }
+                ifWinnerFound("90deg", who, d);
+                break checkCellsLoop;
               }
-              setWinnerCells(d);
-              setAngle("90deg");
-              setWinner(step);
-              gameOver = true;
-              setCanPlayAgain(true);
-              setCanPlayerStep(true);
             }
           }
         }
       }
 
       // Diagonal check 1
-      d = [];
-      enemysStepInLine = 0;
-      botsStepInLine = 0;
-      for (let i = 0; i <= cellsInLine * cellsInLine; ) {
-        if (newCells[i] === step) {
-          enemysStepInLine++;
-          if (enemysStepInLine === cellsInLine) {
-            for (let k = 0; k <= cellsInLine * cellsInLine; ) {
-              d.push(k);
-              k = k + cellsInLine + 1;
+      if (i === 2) {
+        d = [];
+        opponentStepInLine = 0;
+        botStepInLine = 0;
+        for (let i = 0; i <= cellsInLine * cellsInLine; ) {
+          if (newCells[i] === who) {
+            opponentStepInLine++;
+            if (opponentStepInLine === cellsInLine) {
+              for (let k = 0; k <= cellsInLine * cellsInLine; ) {
+                d.push(k);
+                k = k + cellsInLine + 1;
+              }
+              ifWinnerFound("45deg", who, d);
+              break checkCellsLoop;
             }
-            setWinnerCells(d);
-            setAngle("45deg");
-            setWinner(step);
-            gameOver = true;
-            setCanPlayAgain(true);
-            setCanPlayerStep(true);
           }
+          i = i + cellsInLine + 1;
         }
-        i = i + cellsInLine + 1;
       }
 
       // Diagonal check 2
-      d = [];
-      enemysStepInLine = 0;
-      botsStepInLine = 0;
-      for (let i = cellsInLine - 1; i <= cellsInLine * cellsInLine - 2; ) {
-        if (newCells[i] === step) {
-          enemysStepInLine++;
-          if (enemysStepInLine === cellsInLine) {
-            for (
-              let k = cellsInLine - 1;
-              k <= cellsInLine * cellsInLine - 2;
+      if (i === 3) {
+        d = [];
+        opponentStepInLine = 0;
+        botStepInLine = 0;
+        for (let i = cellsInLine - 1; i <= cellsInLine * cellsInLine - 2; ) {
+          if (newCells[i] === who) {
+            opponentStepInLine++;
+            if (opponentStepInLine === cellsInLine) {
+              for (
+                let k = cellsInLine - 1;
+                k <= cellsInLine * cellsInLine - 2;
 
-            ) {
-              d.push(k);
-              k = k + cellsInLine - 1;
+              ) {
+                d.push(k);
+                k = k + cellsInLine - 1;
+              }
+              ifWinnerFound("135deg", who, d);
+              break checkCellsLoop;
             }
-            setWinnerCells(d);
-            setAngle("135deg");
-            setWinner(step);
-            gameOver = true;
-            setCanPlayAgain(true);
-            setCanPlayerStep(true);
           }
+          i = i + cellsInLine - 1;
         }
-        i = i + cellsInLine - 1;
       }
 
-      // Bot's move
+      // check is it draw
+      if (i === 4) {
+        let busyCells = 0;
+        for (let i = 0; i <= cellsNumber - 1; i++) {
+          if (cells[i] === "x" || cells[i] === "o") {
+            busyCells++;
+          }
+          if (busyCells === cellsNumber - 1) {
+            setWinner("draw");
+            setCanPlayAgain(true);
+            break checkCellsLoop;
+          }
+        }
+      }
+    }
+  };
+
+  // when clicked on any cell
+  const cellsOnClick = (id) => {
+    if (cells[id] === "" && canPlayerStep && winner === "") {
+      botStepInLine = 0;
+      opponentStepInLine = 0;
+      isFound = false;
+      d = [];
+
+      // player's step
+      newCells = cells;
+      setCanPlayAgain(false);
+      setCanPlayerStep(false);
       if (!gameOver) {
+        //set cell that clicked
+        newCells = setCell(id, step);
+        setCanPlayerStep(false);
+        setCells(newCells);
+      }
+      // check if player won
+      checkCells(step);
+
+      // bot's move
+      if (!gameOver) {
+        // difficulty - a chance that bot will think how step or just step randomly
         if (difficultyProbability > Math.floor(Math.random() * 100)) {
-          //atack
-          // checks all horizontal lines
-          if (!isFound && cellsInLine === 3) {
-            newCells = newCells.map((cell, index) => {
-              if (cell === "" && index === 4) {
-                isFound = true;
-                return botsStep();
-              } else {
-                return cell;
-              }
-            });
+          // if field is 3x3, bot should step to center
+          if (!isFound && cellsInLine === 3 && newCells[4] === "") {
+            newCells = setCell(4, botStep());
+            isFound = true;
             setTimeout(() => {
               setCells(newCells);
               setCanPlayAgain(true);
               setCanPlayerStep(true);
             }, 700);
           }
+          //attack
+          // check all horizontal lines
           if (!isFound && winner === "") {
             for (let j = 0; j < cellsInLine * cellsInLine; j += cellsInLine) {
-              enemysStepInLine = 0;
+              opponentStepInLine = 0;
               if (!isFound) {
-                //checks all cells in each horizontal line
                 for (let i = j; i < j + cellsInLine; i++) {
-                  if (newCells[i] === botsStep()) {
-                    enemysStepInLine++;
-                    if (enemysStepInLine === cellsInLine - 1) {
+                  if (newCells[i] === botStep()) {
+                    opponentStepInLine++;
+                    if (opponentStepInLine === cellsInLine - 1) {
                       newCells = newCells.map((cell, index) => {
                         if (
                           cell === "" &&
@@ -246,7 +308,7 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
                           index <= j + cellsInLine - 1
                         ) {
                           isFound = true;
-                          return botsStep();
+                          return botStep();
                         } else {
                           return cell;
                         }
@@ -262,31 +324,24 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
               }
             }
           }
+          //check all vertical lines
           if (!isFound) {
-            //checks all vertical lines
             for (let j = 0; j < cellsInLine; j++) {
-              enemysStepInLine = 0;
+              opponentStepInLine = 0;
 
               //checks all cells in each vertical line
               for (let i = j; i < cellsInLine * cellsInLine; i += cellsInLine) {
-                if (newCells[i] === botsStep()) {
-                  enemysStepInLine++;
-                  if (enemysStepInLine === cellsInLine - 1) {
+                if (newCells[i] === botStep()) {
+                  opponentStepInLine++;
+                  if (opponentStepInLine === cellsInLine - 1) {
                     for (
                       let a = j;
                       a < cellsInLine * cellsInLine;
                       a += cellsInLine
                     ) {
                       if (newCells[a] === "") {
-                        let b = a;
-                        newCells = newCells.map((cell, index) => {
-                          if (cell === "" && index === b) {
-                            isFound = true;
-                            return botsStep();
-                          } else {
-                            return cell;
-                          }
-                        });
+                        isFound = true;
+                        newCells = newCells = setCell(a, botStep());
                       }
                     }
                   }
@@ -299,24 +354,18 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
               }
             }
           }
+          //check diagonal from left top (\)
           if (!isFound) {
-            enemysStepInLine = 0;
+            opponentStepInLine = 0;
             for (let i = 0; i <= cellsInLine * cellsInLine; ) {
-              if (newCells[i] === botsStep()) {
-                enemysStepInLine++;
+              if (newCells[i] === botStep()) {
+                opponentStepInLine++;
               }
-              if (enemysStepInLine === cellsInLine - 1) {
+              if (opponentStepInLine === cellsInLine - 1) {
                 for (let k = 0; k <= cellsInLine * cellsInLine; ) {
                   if (newCells[k] === "") {
-                    let c = k;
-                    newCells = newCells.map((cell, index) => {
-                      if (cell === "" && index === c) {
-                        isFound = true;
-                        return botsStep();
-                      } else {
-                        return cell;
-                      }
-                    });
+                    isFound = true;
+                    newCells = newCells = setCell(k, botStep());
                     setTimeout(() => {
                       setCells(newCells);
                       setCanPlayAgain(true);
@@ -329,32 +378,26 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
               i = i + cellsInLine + 1;
             }
           }
+          //check diagonal from right top (/)
           if (!isFound) {
-            enemysStepInLine = 0;
+            opponentStepInLine = 0;
             for (
               let i = cellsInLine - 1;
               i <= cellsInLine * cellsInLine - 1;
 
             ) {
-              if (newCells[i] === botsStep()) {
-                enemysStepInLine++;
+              if (newCells[i] === botStep()) {
+                opponentStepInLine++;
               }
-              if (enemysStepInLine === cellsInLine - 1) {
+              if (opponentStepInLine === cellsInLine - 1) {
                 for (
                   let k = cellsInLine - 1;
                   k < cellsInLine * cellsInLine - 1;
 
                 ) {
                   if (newCells[k] === "") {
-                    let c = k;
-                    newCells = newCells.map((cell, index) => {
-                      if (cell === "" && index === c) {
-                        isFound = true;
-                        return botsStep();
-                      } else {
-                        return cell;
-                      }
-                    });
+                    isFound = true;
+                    newCells = newCells = setCell(k, botStep());
                     setTimeout(() => {
                       setCells(newCells);
                       setCanPlayAgain(true);
@@ -369,16 +412,16 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
           }
 
           //protect
-          // checks all horizontal lines
+          // check all horizontal lines
           if (!isFound) {
             for (let j = 0; j < cellsInLine * cellsInLine; j += cellsInLine) {
-              enemysStepInLine = 0;
+              opponentStepInLine = 0;
 
               //checks all cells in each horizontal line
               for (let i = j; i < j + cellsInLine; i++) {
                 if (newCells[i] === step) {
-                  enemysStepInLine++;
-                  if (enemysStepInLine === cellsInLine - 1) {
+                  opponentStepInLine++;
+                  if (opponentStepInLine === cellsInLine - 1) {
                     newCells = newCells.map((cell, index) => {
                       if (
                         cell === "" &&
@@ -386,7 +429,7 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
                         index <= j + cellsInLine - 1
                       ) {
                         isFound = true;
-                        return botsStep();
+                        return botStep();
                       } else {
                         return cell;
                       }
@@ -401,32 +444,25 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
               }
             }
           }
-
+          //check all vertical lines
           if (!isFound) {
             //checks all vertical lines
             for (let j = 0; j < cellsInLine; j++) {
-              enemysStepInLine = 0;
+              opponentStepInLine = 0;
 
               //checks all cells in each vertical line
               for (let i = j; i < cellsInLine * cellsInLine; i += cellsInLine) {
                 if (newCells[i] === step) {
-                  enemysStepInLine++;
-                  if (enemysStepInLine === cellsInLine - 1) {
+                  opponentStepInLine++;
+                  if (opponentStepInLine === cellsInLine - 1) {
                     for (
                       let a = j;
                       a < cellsInLine * cellsInLine;
                       a += cellsInLine
                     ) {
                       if (newCells[a] === "") {
-                        let b = a;
-                        newCells = newCells.map((cell, index) => {
-                          if (cell === "" && index === b) {
-                            isFound = true;
-                            return botsStep();
-                          } else {
-                            return cell;
-                          }
-                        });
+                        isFound=true;
+                        newCells = setCell(a, botStep());
                       }
                     }
                   }
@@ -439,24 +475,18 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
               }
             }
           }
+          //check diagonal from left top (\)
           if (!isFound) {
-            enemysStepInLine = 0;
+            opponentStepInLine = 0;
             for (let i = 0; i <= cellsInLine * cellsInLine; ) {
               if (newCells[i] === step) {
-                enemysStepInLine++;
+                opponentStepInLine++;
               }
-              if (enemysStepInLine === cellsInLine - 1) {
+              if (opponentStepInLine === cellsInLine - 1) {
                 for (let k = 0; k <= cellsInLine * cellsInLine; ) {
                   if (newCells[k] === "") {
-                    let c = k;
-                    newCells = newCells.map((cell, index) => {
-                      if (cell === "" && index === c) {
-                        isFound = true;
-                        return botsStep();
-                      } else {
-                        return cell;
-                      }
-                    });
+                    isFound=true;
+                    newCells = setCell(k, botStep());
                     setTimeout(() => {
                       setCells(newCells);
                       setCanPlayAgain(true);
@@ -469,32 +499,26 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
               i = i + cellsInLine + 1;
             }
           }
+          //check diagonal from right top (/)
           if (!isFound) {
-            enemysStepInLine = 0;
+            opponentStepInLine = 0;
             for (
               let i = cellsInLine - 1;
               i <= cellsInLine * cellsInLine - 1;
 
             ) {
               if (newCells[i] === step) {
-                enemysStepInLine++;
+                opponentStepInLine++;
               }
-              if (enemysStepInLine === cellsInLine - 1) {
+              if (opponentStepInLine === cellsInLine - 1) {
                 for (
                   let k = cellsInLine - 1;
                   k < cellsInLine * cellsInLine - 1;
 
                 ) {
                   if (newCells[k] === "") {
-                    let c = k;
-                    newCells = newCells.map((cell, index) => {
-                      if (cell === "" && index === c) {
-                        isFound = true;
-                        return botsStep();
-                      } else {
-                        return cell;
-                      }
-                    });
+                    isFound=true;
+                    newCells = newCells = setCell(k, botStep());
                     setTimeout(() => {
                       setCells(newCells);
                       setCanPlayerStep(true);
@@ -507,6 +531,8 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
             }
           }
         }
+
+        //step randomly
         if (!isFound) {
           let freeCells = [];
           let randomCell;
@@ -518,203 +544,99 @@ const Solo = ({ cellsInLine, step, difficulty, myName }) => {
           }
 
           randomCell = Math.floor(Math.random() * freeCells.length);
-          newCells = newCells.map((cell, index) => {
-            if (index === freeCells[randomCell]) {
-              isFound = true;
-              return botsStep();
-            } else {
-              return cell;
-            }
-          });
+          isFound = true;
+          newCells = setCell(freeCells[randomCell], botStep());
           setTimeout(() => {
             setCells(newCells);
             setCanPlayerStep(true);
           }, 700);
         }
-      }
 
-      // Checks if bot won
-      // Horizontal check
-      for (let j = 0; j < cellsInLine * cellsInLine; j += cellsInLine) {
-        enemysStepInLine = 0;
-        botsStepInLine = 0;
-        //checks all cells in each horizontal line
-        for (let i = j; i < j + cellsInLine; i++) {
-          if (newCells[i] === botsStep()) {
-            botsStepInLine++;
-            if (botsStepInLine === cellsInLine) {
-              for (let k = j; k < j + cellsInLine; k++) {
-                d.push(k);
-              }
-              setWinnerCells(d);
-              setAngle("0deg");
-              setWinner(botsStep());
-              gameOver = true;
-            }
-          }
-        }
+        // check if bot won
+        checkCells(botStep());
       }
-
-      // Vertical check
-      d = [];
-      for (let j = 0; j < cellsInLine; j++) {
-        enemysStepInLine = 0;
-        botsStepInLine = 0;
-        for (let i = j; i < cellsInLine * cellsInLine; i += cellsInLine) {
-          if (newCells[i] === botsStep()) {
-            botsStepInLine++;
-            if (botsStepInLine === cellsInLine) {
-              for (
-                let k = j;
-                k <= cellsInLine * cellsInLine;
-                k += cellsInLine
-              ) {
-                d.push(k);
-              }
-              setWinnerCells(d);
-              setAngle("90deg");
-              setWinner(botsStep());
-              gameOver = true;
-            }
-          }
-        }
-      }
-
-      // Diagonal check 1
-      d = [];
-      enemysStepInLine = 0;
-      botsStepInLine = 0;
-      for (let i = 0; i <= cellsInLine * cellsInLine; ) {
-        if (newCells[i] === botsStep()) {
-          botsStepInLine++;
-          if (botsStepInLine === cellsInLine) {
-            for (let k = 0; k <= cellsInLine * cellsInLine; ) {
-              d.push(k);
-              k = k + cellsInLine + 1;
-            }
-            setWinnerCells(d);
-            setAngle("45deg");
-            setWinner(botsStep());
-            gameOver = true;
-          }
-        }
-        i = i + cellsInLine + 1;
-      }
-
-      // Diagonal check 2
-      d = [];
-      enemysStepInLine = 0;
-      botsStepInLine = 0;
-      for (let i = cellsInLine - 1; i <= cellsInLine * cellsInLine - 2; ) {
-        if (newCells[i] === botsStep()) {
-          botsStepInLine++;
-          if (botsStepInLine === cellsInLine) {
-            for (
-              let k = cellsInLine - 1;
-              k <= cellsInLine * cellsInLine - 2;
-
-            ) {
-              d.push(k);
-              k = k + cellsInLine - 1;
-            }
-            setWinnerCells(d);
-            setAngle("135deg");
-            setWinner(botsStep());
-            gameOver = true;
-          }
-        }
-        i = i + cellsInLine - 1;
-      }
-      let busyCells = 0;
-    for(let i=0; i<=cellsNumber-1; i++){
-      if(cells[i]==="x" || cells[i]==="o"){
-        busyCells++;
-      }
-      if(busyCells===cellsNumber-1){
-        setWinner("draw");
-        setCanPlayAgain(true);
-      }
-    }
     }
   };
 
   return (
     <div className="show">
-          <div className={styles.top}>
-            <Link to="/">
-              <div className="back">
-                <div className="arrow"></div>
-              </div>
-            </Link>
-            <div className={styles.stat}>
-              <div className={styles.item}>
-                <div className={styles.nickname}>{myName}</div>
-                <div className={styles.left}>
-                  <Icon step={step} color={"me"} size={35} />
-                </div>
-                <div className={styles.score}>{statPlayer}</div>
-              </div>
-              <div className={styles.item}>
-                <div className={styles.score}>{statBot}</div>
-                <div className={styles.right}>
-                  <Icon step={botsStep()} color={"enemy"} size={35} />
-                </div>
-                <div className={styles.nickname}>Bot</div>
-              </div>
+      <div className={styles.top}>
+        <Link to="/">
+          <div className="back">
+            <div className="arrow"></div>
+          </div>
+        </Link>
+        <div className={styles.stat}>
+          <div className={styles.item}>
+            <div className={styles.nickname}>{myName}</div>
+            <div className={styles.left}>
+              <Icon step={step} color={"me"} size={35} />
             </div>
+            <div className={styles.score}>{statPlayer}</div>
           </div>
-          <div className={styles.game}>
-            <table
-              border="1"
-              cellSpacing="0"
-              cellPadding="10"
-              className={styles.field}
-            >
-              <tbody>
-                {Array(cellsInLine)
-                  .fill("")
-                  .map((el, index) => (
-                    <tr
-                      key={index}
-                      style={{ height: `calc(100% / ${cellsInLine})` }}
-                    >
-                      {Array.from(cells).map((cell, idx) => {
-                        if (
-                          idx >= index * cellsInLine &&
-                          idx < index * cellsInLine + cellsInLine
-                        ) {
-                          return (
-                            <Cell
-                              winnerCells={winnerCells}
-                              winner={winner}
-                              cellContent={cell}
-                              setCell={() => {
-                                cellsOnClick(idx);
-
-                              }}
-                              index={idx}
-                              cellsInLine={cellsInLine}
-                              key={idx}
-                              step={step}
-                              enemyStep={botsStep()}
-                              angle={angle}
-                            />
-                          );
-                        }
-                      })}
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+          <div className={styles.item}>
+            <div className={styles.score}>{statBot}</div>
+            <div className={styles.right}>
+              <Icon step={botStep()} color={"opponent"} size={35} />
+            </div>
+            <div className={styles.nickname}>Bot</div>
           </div>
-          {modalOpen && (
-            <Modal
-              winner={winner}
-              step={step}
-              playAgain={playAgain}
-              gamemode={"solo"}
-            />
-          )}
+        </div>
+      </div>
+      <div className={styles.game}>
+        <table
+          border="1"
+          cellSpacing="0"
+          cellPadding="10"
+          className={styles.field}
+        >
+          <tbody>
+            {Array(cellsInLine)
+              .fill("")
+              .map((el, index) => (
+                <tr
+                  key={index}
+                  style={{ height: `calc(100% / ${cellsInLine})` }}
+                >
+                  {Array.from(cells).map((cell, idx) => {
+                    if (
+                      idx >= index * cellsInLine &&
+                      idx < index * cellsInLine + cellsInLine
+                    ) {
+                      return (
+                        <Cell
+                          theme={theme}
+                          winnerCells={winnerCells}
+                          winner={winner}
+                          cellContent={cell}
+                          setCell={() => {
+                            cellsOnClick(idx);
+                          }}
+                          index={idx}
+                          cellsInLine={cellsInLine}
+                          key={idx}
+                          step={step}
+                          opponentStep={botStep()}
+                          angle={angle}
+                        />
+                      );
+                    }
+                  })}
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+      {modalOpen && (
+        <Modal
+          modalLangJson={modalLangJson}
+          theme={theme}
+          winner={winner}
+          step={step}
+          playAgain={playAgain}
+          gamemode={"solo"}
+        />
+      )}
     </div>
   );
 };

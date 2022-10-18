@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "./Profile.module.scss";
 
-const Profile = ({ setNickname, setProfileOpened }) => {
+const Profile = ({ langJson, theme, setNickname, setProfileOpened }) => {
   const [inputValue, setInputValue] = useState("");
   const [btnBlocked, setBtnBlocked] = useState(true);
 
@@ -21,16 +21,20 @@ const Profile = ({ setNickname, setProfileOpened }) => {
     }
   };
 
-  const enterPressed = (e) => {
+  const anyKeyPressed = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       setName();
     }
+    else if (e.key === "Escape") {
+      e.preventDefault();
+      setProfileOpened(false);
+    }
   };
-
+  
   return (
     <div className="wrapper">
-      <div className={styles.modal + " show"}>
+      <div className={(theme==="white" ? styles.modalWhite : "") + " " + styles.modal + " show"}>
         <div
           onClick={() => {
             setProfileOpened(false);
@@ -39,24 +43,26 @@ const Profile = ({ setNickname, setProfileOpened }) => {
         >
           <div className="arrow"></div>
         </div>
-        <div className={styles.title}>Who are you?</div>
+        <div className={styles.title}>
+          {langJson["title"]}
+          </div>
         <input
           autoFocus
           onKeyDown={(e) => {
-            enterPressed(e);
+            anyKeyPressed(e);
           }}
           tabIndex="0"
           onChange={(e) => {
             inputChange(e.target.value);
           }}
           className={styles.input}
-          placeholder="Input your name"
+          placeholder={langJson["placeholder"]}
         />
         <div
           onClick={setName}
           className={(btnBlocked && styles.blocked) + " " + styles.btn}
         >
-          Continue
+          {langJson["btn"]}
         </div>
       </div>
     </div>

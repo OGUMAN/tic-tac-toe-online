@@ -1,0 +1,52 @@
+{
+  "settings": {
+    "title": "Настройки игры",
+    "sound": "Звук",
+    "language": "Язык",
+    "theme": "Тема",
+    "choseLanguage": "Выберите язык"
+  },
+  "menu": {
+    "solo": "Одиночная игра",
+    "multiplayer": "Мультиплеер",
+    "settings": "Настройки"
+  },
+  "profile": {
+    "title": "Смена ника",
+    "placeholder": "Введите ваш ник",
+    "btn": "Продолжить"
+  },
+  "soloSettings": {
+    "title": "Настройки одиночной игры",
+    "difficulty": "Сложность",
+    "easy": "Легко",
+    "medium": "Средняя",
+    "hard": "Тяжело",
+    "impossible": "Невозможно",
+    "fieldWidth": "Ширина поля",
+    "character": "Персонаж"
+  },
+  "modal": {
+    "winTitle": "Поздравляю!",
+    "winDesc": "Вы победитель!",
+    "playAgain": "Играть снова",
+    "toMenu": "В меню",
+    "lostTitle": "Мои сожаления!",
+    "lostDesc": "Вы проиграли.",
+    "drawTitle":  "Ничья",
+    "youKickedTitle": "Вы были выгнаны!",
+    "opponentKickedTitle": "Ваш оппонент был выгнан!",
+    "youKickedDesc": "Вы заняли слишком много времени.",
+    "opponentKickedDesc": "Ваш оппонент занял слишком много времени.",
+    "leavedTitle": "Оппонент покинул игры"
+  },
+  "chat": {
+    "empty": "Здесь пока ничего нет",
+    "placeholder": "Написать"
+  },
+  "loading": {
+    "title": "Загрузка",
+    "searchTitle": "Поиск соперника",
+    "online": "игроков онлайн"
+  }
+}

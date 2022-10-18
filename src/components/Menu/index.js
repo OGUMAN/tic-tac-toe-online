@@ -2,25 +2,41 @@ import styles from "./Menu.module.scss";
 import Profile from "./Profile";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import Module from "../Game/Modal";
 
-const Menu = ({ whoAfk, setNickname, nickname }) => {
+const Menu = ({
+  profileJson,
+  langJson = {},
+  theme,
+  whoAfk,
+  setNickname,
+  nickname,
+}) => {
   const [profileOpened, setProfileOpened] = useState(false);
 
   return (
     <div className="show">
       {profileOpened && (
         <Profile
+          langJson={profileJson}
+          theme={theme}
           setProfileOpened={setProfileOpened}
           setNickname={setNickname}
         />
       )}
-      <div className={styles.menu}>
+      <div
+        className={
+          styles.menu + " " + (theme === "white" ? styles.menuWhite : "")
+        }
+      >
         <div
           onClick={() => {
             setProfileOpened(true);
           }}
-          className={styles.profile}
+          className={
+            (theme === "white" ? styles.profileWhite : "") +
+            " " +
+            styles.profile
+          }
         >
           <img
             className={styles.icon}
@@ -36,7 +52,8 @@ const Menu = ({ whoAfk, setNickname, nickname }) => {
             <Link to="solo">
               <div className={styles.btn}>
                 <div className={styles.btn__text}>
-                  <span>🤖</span>Single player game
+                  <span>🤖</span>
+                  {langJson["solo"]}
                 </div>
               </div>
             </Link>
@@ -47,14 +64,18 @@ const Menu = ({ whoAfk, setNickname, nickname }) => {
           <Link to="multiplayer">
             <div className={styles.btn}>
               <div className={styles.btn__text}>
-                <span>🤝</span> Multiplayer
+                <span>🤝</span> {langJson["multiplayer"]}
               </div>
             </div>
           </Link>
           <Link to="settings">
-            <div className={styles.btn}>
+            <div
+              className={
+                styles.btn + " " + (theme === "white" ? styles.btnWhite : "")
+              }
+            >
               <div className={styles.btn__text}>
-                <span>⚙️</span> Settings
+                <span>⚙️</span> {langJson["settings"]}
               </div>
             </div>
           </Link>

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Loading.module.scss";
 
-const Loading = ({ online }) => {
+const Loading = ({ theme, gamemode, loadingJson={}, online }) => {
   const [points, setPoints] = useState("");
 
   useEffect(() => {
@@ -29,14 +29,14 @@ const Loading = ({ online }) => {
     }
   }, [points]);
   return (
-    <div className={styles.loading}>
-      <Link to="/">
+    <div className={styles.loading + " " + (theme==="white" ? styles.loadingWhite : "")}>
+      {gamemode==="multiplayer" && <Link to="/">
         <div className="back">
           <div className="arrow"></div>
         </div>
-      </Link>
-      <div className={styles.text}>Looking for an opponent {points}</div>
-      <div className={styles.online}>({online} players online)</div>
+      </Link>}
+      <div className={styles.text}>{gamemode==="multiplayer" ? loadingJson["searchTitle"] : "Loading"} {points}</div>
+      <div className={styles.online}>{gamemode==="multiplayer" && `(${online} ${loadingJson["online"]})`}</div>
     </div>
   );
 };
