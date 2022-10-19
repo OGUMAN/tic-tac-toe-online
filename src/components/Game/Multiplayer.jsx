@@ -7,13 +7,13 @@ import Loading from "./Loading";
 import Icon from "./Icon";
 import Modal from "./Modal";
 import Chat from "./Chat";
-import messageAudio from "../../sounds/plop.mp3";
-import loseAudio from "../../sounds/lose.mp3";
-import wonAudio from "../../sounds/won.mp3";
-import timeoutAudio from "../../sounds/timeout.mp3";
 
 const Multiplayer = ({
-  soundOn,
+  timeout,
+  won,
+  lose,
+  plop,
+  playSound,
   gamemode,
   loadingJson,
   chatJson,
@@ -53,10 +53,6 @@ const Multiplayer = ({
   const [modalTimer, setModalTimer] = useState(10);
   const [online, setOnline] = useState(0);
   const [leaved, setLeaved] = useState(false);
-  const plop = new Audio(messageAudio);
-  const lose = new Audio(loseAudio);
-  const won = new Audio(wonAudio);
-  const timeout = new Audio(timeoutAudio);
 
   // when winner changing open modal
   useEffect(() => { 
@@ -71,19 +67,15 @@ const Multiplayer = ({
     if (winner === step && winner !== "") {
       // when game starts client still doesn't know it's step, so winner is everyone
       setStatPlayer(statPlayer + 1); // incrementing player's score by 1
-      if (soundOn) {
-        setTimeout(() => {
-          won.play();
-        }, 2000);
-      }
+      setTimeout(() => {
+        playSound(won);
+      }, 2000);
     } else if (winner === getOpponentStep() && winner !== "") {
       // when game starts client still doesn't know it's step, so winner is everyone
       setStatBot(statBot + 1); // incrementing opponent's score by 1
-      if (soundOn) {
         setTimeout(() => {
-          lose.play();
+          playSound(lose);
         }, 2000);
-      }
     }
   }, [winner]);
 
@@ -116,6 +108,7 @@ const Multiplayer = ({
 
   socket.on("disconnected", () => { // when opponent left the game
     if (winner === "") {
+      setModalTimer(10); // avoid last timer value for a second, because server will send to client emit that number is 9
       setLeaved(true);
       setModalOpen(true);
     }
@@ -180,9 +173,7 @@ const Multiplayer = ({
       } else {
         setWhoAfk("opponent");
       }
-      if (soundOn) {
-        timeout.play();
-      }
+      playSound(timeout);
     });
 
     // when timer updated
@@ -267,8 +258,8 @@ const Multiplayer = ({
       setUnreadMessages(true);
     }
     // play sound when opponent sends message
-    if (messages[messages.length - 1]?.whose === "opponents" && soundOn) {
-      plop.play();
+    if (messages[messages.length - 1]?.whose === "opponent") {
+      playSound(plop);
     }
   }, [messages]);
 
@@ -313,6 +304,7 @@ const Multiplayer = ({
           whoAfk={whoAfk}
           setMenuModuleOpen={setMenuModuleOpen}
           winner="timeout"
+          gamemode={"multiplayer"}
         />
       )}
       {isLoaded ? (

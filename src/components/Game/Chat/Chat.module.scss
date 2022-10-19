@@ -1,7 +1,8 @@
 .chat {
   max-width: 350px;
   width: 100%;
-  height: calc(500px + 50px);
+  max-height: calc(500px + 50px);
+  height: 100%;
   background-color: #1d1d1d;
   position: absolute;
   top: 50%;
@@ -9,9 +10,10 @@
   transform: translate(-50%, -50%);
   border-radius: 10px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   .input {
-    position: absolute;
-    bottom: 0;
     width: 100%;
     display: flex;
     input {
@@ -153,7 +155,8 @@
 }
 
 .correspondence {
-  height: 450px;
+  max-height: 450px;
+  height: 100%;
   padding: 0 20px;
   margin-top: 50px;
   margin-bottom: 50px;

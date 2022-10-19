@@ -8,6 +8,11 @@ import SoloSettings from "./components/Settings/SoloSettings";
 import Multiplayer from "./components/Game/Multiplayer";
 import Loading from "./components/Game/Loading";
 
+import messageAudio from "./sounds/plop.mp3";
+import loseAudio from "./sounds/lose.mp3";
+import wonAudio from "./sounds/won.mp3";
+import timeoutAudio from "./sounds/timeout.mp3";
+
 function App() {
   const [difficulty, setDifficulty] = useState(2);
   const [cellsInLine, setCellsInLine] = useState(3);
@@ -19,6 +24,17 @@ function App() {
   const [theme, setTheme] = useState("dark");
   const [langJson, setLangJson] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+
+  const plop = new Audio(messageAudio);
+  const lose = new Audio(loseAudio);
+  const won = new Audio(wonAudio);
+  const timeout = new Audio(timeoutAudio);
+
+  const playSound = (sound) => {
+    if(soundOn){ // if sound is turned on in settings
+      sound.play(); // play sound
+    }
+  } 
 
   useEffect(() => {
     if (language === "English") {
@@ -78,7 +94,6 @@ function App() {
           path="solo"
           element={
             <Solo
-              soundOn={soundOn}
               modalLangJson={langJson.modal}
               theme={theme}
               cellsInLine={cellsInLine}
@@ -86,6 +101,9 @@ function App() {
               step={step}
               difficulty={difficulty}
               myName={nickname}
+              playSound={playSound}
+              lose={lose}
+              won={won}
             />
           }
         />
@@ -93,13 +111,17 @@ function App() {
           path="multiplayer"
           element={
             <Multiplayer
-              soundOn={soundOn}
               loadingJson={langJson.loading}
               chatJson={langJson.chat}
               modalLangJson={langJson.modal}
               theme={theme}
               myName={nickname}
               gamemode="multiplayer"
+              playSound={playSound}
+              plop={plop}
+              lose={lose}
+              won={won}
+              timeout={timeout}
             />
           }
         />
@@ -114,6 +136,7 @@ function App() {
               theme={theme}
               soundOn={soundOn}
               setSoundOn={setSoundOn}
+              timeout={timeout}
             />
           }
         />

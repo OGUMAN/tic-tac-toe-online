@@ -4,11 +4,11 @@ import Cell from "./Cell";
 import Modal from "./Modal";
 import Icon from "./Icon";
 import { Link } from "react-router-dom";
-import loseAudio from "../../sounds/lose.mp3";
-import wonAudio from "../../sounds/won.mp3";
 
 const Solo = ({
-  soundOn,
+  playSound,
+  lose,
+  won,
   modalLangJson = {},
   cellsInLine,
   step,
@@ -33,8 +33,6 @@ const Solo = ({
   let newCells;
   let gameOver = false;
   let [canPlayerStep, setCanPlayerStep] = useState(true);
-  const lose = new Audio(loseAudio);
-  const won = new Audio(wonAudio);
 
   // when winner changing open modal
   useEffect(() => {
@@ -50,19 +48,17 @@ const Solo = ({
         setModalOpen(true);
       }
     }
-    if (soundOn) {
-      // is sound turned on
-      if (winner === step) {
-        // winner = me?
-        setTimeout(() => {
-          won.play();
-        }, 1750);
-      } else if (winner === botStep()) {
-        // or winner = opponent?
-        setTimeout(() => {
-          lose.play();
-        }, 1750);
-      }
+    // is sound turned on
+    if (winner === step) {
+      // winner = me?
+      setTimeout(() => {
+        playSound(won);
+      }, 1750);
+    } else if (winner === botStep()) {
+      // or winner = opponent?
+      setTimeout(() => {
+        playSound(lose);
+      }, 1750);
     }
   }, [winner]);
 
@@ -461,7 +457,7 @@ const Solo = ({
                       a += cellsInLine
                     ) {
                       if (newCells[a] === "") {
-                        isFound=true;
+                        isFound = true;
                         newCells = setCell(a, botStep());
                       }
                     }
@@ -485,7 +481,7 @@ const Solo = ({
               if (opponentStepInLine === cellsInLine - 1) {
                 for (let k = 0; k <= cellsInLine * cellsInLine; ) {
                   if (newCells[k] === "") {
-                    isFound=true;
+                    isFound = true;
                     newCells = setCell(k, botStep());
                     setTimeout(() => {
                       setCells(newCells);
@@ -517,7 +513,7 @@ const Solo = ({
 
                 ) {
                   if (newCells[k] === "") {
-                    isFound=true;
+                    isFound = true;
                     newCells = newCells = setCell(k, botStep());
                     setTimeout(() => {
                       setCells(newCells);

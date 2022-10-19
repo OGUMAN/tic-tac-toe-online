@@ -99,12 +99,8 @@ const Modal = ({
           </div>
         )}
         <Link to="/" className={styles.leave}>
-          {winner === "timeout" || leaved
-            ? modalLangJson["toMenu"]
-            : gamemode === "multiplayer"
-            ? modalLangJson["playAgain"]
-            : modalLangJson["toMenu"]}
-          {gamemode !== "solo" && ` (${modalTimer})`}
+          {modalLangJson["toMenu"]}
+          {gamemode === "multiplayer" && ` (${modalTimer})`}
         </Link>
       </div>
     </div>
