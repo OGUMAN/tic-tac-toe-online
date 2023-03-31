@@ -36,6 +36,7 @@ $btnColor: #3b549b;
     .icon {
       margin-right: 5px;
       transition: 0.2s;
+      user-select: none;
     }
   }
 
@@ -69,7 +70,6 @@ $btnColor: #3b549b;
         cursor: pointer;
         font-weight: 500;
         transition: background-color 0.2s;
-        user-select: none;
 
         &:last-child {
           margin-bottom: 0;
@@ -91,6 +91,7 @@ $btnColor: #3b549b;
             left: -30px;
             top: 50%;
             transform: translateY(-50%);
+            user-select: none;
           }
         }
       }

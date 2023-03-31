@@ -55,8 +55,9 @@ const Multiplayer = ({
   const [leaved, setLeaved] = useState(false);
 
   // when winner changing open modal
-  useEffect(() => { 
-    if (winner !== "" && winner !== "timeout") { // avoid opening modal when game just started
+  useEffect(() => {
+    if (winner !== "" && winner !== "timeout") {
+      // avoid opening modal when game just started
       setTimeout(() => {
         setModalOpen(true);
       }, 2500);
@@ -73,9 +74,9 @@ const Multiplayer = ({
     } else if (winner === getOpponentStep() && winner !== "") {
       // when game starts client still doesn't know it's step, so winner is everyone
       setStatBot(statBot + 1); // incrementing opponent's score by 1
-        setTimeout(() => {
-          playSound(lose);
-        }, 2000);
+      setTimeout(() => {
+        playSound(lose);
+      }, 2000);
     }
   }, [winner]);
 
@@ -89,13 +90,15 @@ const Multiplayer = ({
     };
   }, [myRoom, room]);
 
-  const cellsOnClick = (id) => { 
-    if (canStep) { // can player step?
+  const cellsOnClick = (id) => {
+    if (canStep) {
+      // can player step?
       socket.emit("cellClick", cells, id, room, step, myRoom, opponentRoom);
     }
   };
 
-  const messageSend = () => { // Enter or send button pressed
+  const messageSend = () => {
+    // Enter or send button pressed
     if (inputValue.length > 0 && inputValue.length < 1000) {
       socket.emit("send message", inputValue, myRoom, opponentRoom); // send message to server
       setInputValue("");
@@ -106,7 +109,8 @@ const Multiplayer = ({
     setInputValue(value);
   };
 
-  socket.on("disconnected", () => { // when opponent left the game
+  socket.on("disconnected", () => {
+    // when opponent left the game
     if (winner === "") {
       setModalTimer(10); // avoid last timer value for a second, because server will send to client emit that number is 9
       setLeaved(true);
@@ -114,7 +118,8 @@ const Multiplayer = ({
     }
   });
 
-  socket.on("timer decrement", (player, timerSeconds) => { // when timer decrements
+  socket.on("timer decrement", (player, timerSeconds) => {
+    // when timer decrements
     if (player === myRoom) {
       setTimer(timerSeconds);
     } else if (player === opponentRoom) {
@@ -122,8 +127,8 @@ const Multiplayer = ({
     }
   });
 
-
-  socket.on("unblocked", (intervalVar) => { // server unblocking me to step
+  socket.on("unblocked", (intervalVar) => {
+    // server unblocking me to step
     setCanStep(true);
     setCurrentStep(step);
   });
@@ -147,18 +152,21 @@ const Multiplayer = ({
       setCanStep(true);
     }
   });
-  socket.on("blocked", () => { // server blocking me to step
+  socket.on("blocked", () => {
+    // server blocking me to step
     setCanStep(false);
     setCurrentStep(getOpponentStep());
   });
-  
-  socket.on("get message", (message) => { // getting message from server
+
+  socket.on("get message", (message) => {
+    // getting message from server
     setMessages([...messages, message]);
   });
 
   useEffect(() => {
     socket.emit("get online"); // get online request
-    socket.on("send online", (online) => { // getting online
+    socket.on("send online", (online) => {
+      // getting online
       setOnline(online);
     });
 

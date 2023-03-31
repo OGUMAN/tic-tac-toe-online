@@ -6,8 +6,9 @@ const Profile = ({ langJson, theme, setNickname, setProfileOpened }) => {
   const [btnBlocked, setBtnBlocked] = useState(true);
 
   const inputChange = (value) => {
-    setInputValue(value);
-    if (value.length >= 3 && value.length <= 16) {
+    const valueStrip = value.trim();
+    setInputValue(valueStrip)
+    if (valueStrip.length >= 3 && valueStrip.length <= 16) {
       setBtnBlocked(false);
     } else {
       setBtnBlocked(true);
@@ -25,16 +26,22 @@ const Profile = ({ langJson, theme, setNickname, setProfileOpened }) => {
     if (e.key === "Enter") {
       e.preventDefault();
       setName();
-    }
-    else if (e.key === "Escape") {
+    } else if (e.key === "Escape") {
       e.preventDefault();
       setProfileOpened(false);
     }
   };
-  
+
   return (
     <div className="wrapper">
-      <div className={(theme==="white" ? styles.modalWhite : "") + " " + styles.modal + " show"}>
+      <div
+        className={
+          (theme === "white" ? styles.modalWhite : "") +
+          " " +
+          styles.modal +
+          " show"
+        }
+      >
         <div
           onClick={() => {
             setProfileOpened(false);
@@ -43,9 +50,7 @@ const Profile = ({ langJson, theme, setNickname, setProfileOpened }) => {
         >
           <div className="arrow"></div>
         </div>
-        <div className={styles.title}>
-          {langJson["title"]}
-          </div>
+        <div className={styles.title}>{langJson["title"]}</div>
         <input
           autoFocus
           onKeyDown={(e) => {
@@ -57,6 +62,7 @@ const Profile = ({ langJson, theme, setNickname, setProfileOpened }) => {
           }}
           className={styles.input}
           placeholder={langJson["placeholder"]}
+          value={inputValue}
         />
         <div
           onClick={setName}

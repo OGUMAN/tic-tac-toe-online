@@ -34,10 +34,10 @@
     "lostTitle": "Compassion!",
     "lostDesc": "You lost the battle",
     "drawTitle":  "It's Draw!",
-    "youKickedTitle": "You were kicked out!",
-    "opponentKickedTitle": "Your opponent was kicked out!",
-    "youKickedDesc": "You took too much time.",
-    "opponentKickedDesc": "Your opponent took too much time.",
+    "youKickedTitle": "Timeout!",
+    "opponentKickedTitle": "Timeout!",
+    "youKickedDesc": "You or your opponent was kicked out.",
+    "opponentKickedDesc": "You or your opponent was kicked out.",
     "leavedTitle": "Your opponent left the game"
   },
   "chat": {

@@ -34,14 +34,14 @@
     "lostTitle": "Мої співчуття!",
     "lostDesc": "Ви програли.",
     "drawTitle":  "Нічия",
-    "youKickedTitle": "Ви були вигнані!",
-    "opponentKickedTitle": "Вашого опонента було вигнано!",
-    "youKickedDesc": "Ви зайняли надто багато часу.",
-    "opponentKickedDesc": "Ваш опонент зайняв надто багато часу.",
+    "youKickedTitle": "Таймаут!",
+    "opponentKickedTitle": "Таймаут!",
+    "youKickedDesc": "Ви або ваш суперник зайняли забагато часу.",
+    "opponentKickedDesc": "Ви або ваш суперник зайняли забагато часу.",
     "leavedTitle": "Ваш суперник покинув гру"
   },
   "chat": {
-    "empty": "Здесь пока ничего нет",
+    "empty": "Тут поки що нічого немає",
     "placeholder": "Написати"
   },
   "loading": {

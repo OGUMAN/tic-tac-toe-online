@@ -34,10 +34,10 @@
     "lostTitle": "Мои сожаления!",
     "lostDesc": "Вы проиграли.",
     "drawTitle":  "Ничья",
-    "youKickedTitle": "Вы были выгнаны!",
-    "opponentKickedTitle": "Ваш оппонент был выгнан!",
-    "youKickedDesc": "Вы заняли слишком много времени.",
-    "opponentKickedDesc": "Ваш оппонент занял слишком много времени.",
+    "youKickedTitle": "Таймаут!",
+    "opponentKickedTitle": "Таймаут!",
+    "youKickedDesc": "Вы или ваш оппонент заняли слишком много времени.",
+    "opponentKickedDesc": "Вы или ваш оппонент заняли слишком много времени.",
     "leavedTitle": "Оппонент покинул игру"
   },
   "chat": {
