@@ -1,2 +1,2 @@
 import { io } from "socket.io-client";
-export const socket = io.connect("https://tic-tac-toe-portfolio-server.onrender.com");
+export const socket = io.connect(process.env.REACT_APP_SERVER_PORT);
